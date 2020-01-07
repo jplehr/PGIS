@@ -29,6 +29,12 @@ add_json_parser(pgoelib)
 add_extrap_includes(pgoelib)
 add_extrap_libraries(pgoelib)
 
+configure_package_config_file(
+  ${PROJECT_SOURCE_DIR}/cmake/Config.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+  INSTALL_DESTINATION lib/cmake
+)  
+
 install(
   TARGETS pgoelib
   EXPORT ${TARGETS_EXPORT_NAME}

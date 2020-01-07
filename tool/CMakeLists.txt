@@ -22,3 +22,15 @@ add_pgoe_library(pgis_stmt_printer)
 add_extrap_libraries(pgis_stmt_printer)
 add_cube_libraries(pgis_stmt_printer)
 
+
+install(
+  TARGETS pgis_pira pgis_stmt_printer
+  EXPORT ${TARGETS_EXPORT_NAME}
+	RUNTIME DESTINATION bin
+)
+
+install(FILES
+  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+  DESTINATION lib/cmake
+)
+
