@@ -568,4 +568,36 @@ double calcRuntimeThreshold(const Callgraph &cg, bool useLongAsRef) {
   return rt[lastIndex];
 }
 
+double calcInclusiveRuntime(CgNode *node) {
+  double runTime = 0.0;
+
+  std::queue<const CgNode *> workQueue;
+  workQueue.push(node);
+  std::unordered_set<const CgNode *> visitedNodes;
+
+  while (!workQueue.empty()) {
+    auto node = workQueue.front();
+    workQueue.pop();
+
+    visitedNodes.insert(node);
+
+    // Only count the runtime of nodes comming from the profile
+    if (node->comesFromCube()) {
+      runTime += node->getRuntimeInSeconds();
+    }
+
+    for (auto childNode : node->getChildNodes()) {
+      // Only visit unseen, profiled nodes. Only those have actual timing info!
+      CgNode *cn = childNode.get();
+      if (visitedNodes.find(cn) == visitedNodes.end() && childNode->comesFromCube()) {
+        workQueue.push(cn);
+      }
+    }
+  }
+
+  // startNode->setInclusiveRuntimeInSeconds(runTime);
+  return runTime;
+}
+
+
 }  // namespace CgHelper

@@ -16,7 +16,8 @@ CgNode::CgNode(std::string function) : epCon({}, {}) {
   this->numberOfUnwindSteps = 0;
 
   this->runtimeInSeconds = 0.0;
-  this->inclusiveRuntimeInSeconds = .0;
+  // Mark the inclusive runtime as uninitialized
+  this->inclusiveRuntimeInSeconds = -1.0;
   this->expectedNumberOfSamples = 0L;
 
   this->numberOfCalls = 0;
@@ -222,6 +223,9 @@ void CgNode::setInclusiveRuntimeInSeconds(double newInclusiveRuntimeInSeconds) {
 double CgNode::getInclusiveRuntimeInSeconds() {
   if (childNodes.size() == 0) {
     inclusiveRuntimeInSeconds = runtimeInSeconds;
+  } else if (inclusiveRuntimeInSeconds < .0) {
+    double rt = CgHelper::calcInclusiveRuntime(this);
+    inclusiveRuntimeInSeconds = rt;
   }
   return inclusiveRuntimeInSeconds;
 }

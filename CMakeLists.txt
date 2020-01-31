@@ -23,6 +23,8 @@ link_directories(
   ${EXTRAP_LIB}
 )
 
+enable_testing()
+
 add_subdirectory(lib)
 add_subdirectory(tool)
 add_subdirectory(test)

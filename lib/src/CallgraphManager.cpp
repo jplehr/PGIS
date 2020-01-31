@@ -90,6 +90,11 @@ void CallgraphManager::finalizeGraph(bool buildMarker) {
       node->updateNodeAttributes(false);
     }
 
+    // graph.findMain caches the main node
+    if (CgHelper::reachableFrom(graph.findMain(), node)) {
+      node->setReachable();
+    }
+
     if (buildMarker) {
       CgNodePtrSet markerPositions = CgHelper::getPotentialMarkerPositions(node);
       node->getMarkerPositions().insert(markerPositions.begin(), markerPositions.end());

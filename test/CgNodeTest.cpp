@@ -61,13 +61,14 @@ TEST(CgNodeBasics, CreateChildParentNodeDefaults) {
 TEST(CgNodeBasics, CreateChildParentRuntime) {
   auto n = std::make_shared<CgNode>("parent");
   auto c = std::make_shared<CgNode>("child");
+  c->setComesFromCube();
+  n->setComesFromCube();
   n->setRuntimeInSeconds(1.25);
   c->setRuntimeInSeconds(0.25);
   n->addChildNode(c);
   c->addParentNode(n);
   ASSERT_EQ(1.25, n->getRuntimeInSeconds());
   ASSERT_EQ(0.25, c->getRuntimeInSeconds());
-  // FIXME: I think this should be consistent: Either always 0 or always the correct value!
   ASSERT_EQ(1.5, n->getInclusiveRuntimeInSeconds());
   ASSERT_EQ(true, c->isLeafNode());
   ASSERT_EQ(true, n->isRootNode());
